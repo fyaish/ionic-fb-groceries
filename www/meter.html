@@ -44,18 +44,18 @@
         </div>
         <h3>Positive</h3>
         <div class="button-bar">
-            <button class="button button-stable button-block " ng-click="like(1)">+1</button>
-            <button class="button button-stable button-block " ng-click="like(2)">+2</button>
-            <button class="button button-stable button-block " ng-click="like(3)">+3</button>
+            <button class="button button-stable button-block ion-plus" ng-click="like(1)">1</button>
+            <button class="button button-stable button-block ion-plus" ng-click="like(2)">2</button>
+            <button class="button button-stable button-block ion-plus" ng-click="like(3)">3</button>
         </div>
         <h3>Negative</h3>
         <div class="button-bar">
-            <button class="button button-stable button-block " ng-click="like(-1)">-1</button>
-            <button class="button button-stable button-block " ng-click="like(-2)">-2</button>
-            <button class="button button-stable button-block " ng-click="like(-3)">-3</button>
+            <button class="button button-stable button-block ion-minus" ng-click="like(-1)">1</button>
+            <button class="button button-stable button-block ion-minus" ng-click="like(-2)">2</button>
+            <button class="button button-stable button-block ion-minus" ng-click="like(-3)">3</button>
         </div>
         <button class="button button-stable button-block  icon ion-ios7-speedometer-outline" ng-click="likeAgain()">{{myRating.rating}}</button>
-
+		<h4>1234 = {{$scope.authData.uid }}</h4>
       <ion-list>
 	  `
         <ion-item ng-repeat="item in items | orderBy:'-$id' " ng-class="{purchased: item.status == 'purchased'}">
