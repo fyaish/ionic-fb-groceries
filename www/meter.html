@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
@@ -11,12 +11,11 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+    <!--script src="cordova.js"></script -->
 
     <!--Firebase-->
     <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
@@ -24,19 +23,27 @@
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
 
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+    </script>
+    
     <!-- your app's js -->
+    <script src="js/ng-google-chart.js"></script>
     <script src="js/meter.js"></script>
-  </head>
-  <body ng-app="starter" ng-controller="ListCtrl">
+</head>
+<body ng-app="starter" ng-controller="ListCtrl">
     <ion-header-bar class="top">
-      <h1 class="title">Items</h1>
-      <button class="button button-icon ion-plus" ng-click="addItem()"></button>
+        <h1 class="title">Items</h1>
+        <button class="button button-icon ion-plus" ng-click="addItem()"></button>
     </ion-header-bar>
 
 
-    
-		<ion-content padding="true" class="has-header">
-       <h1>Meter</h1>
+
+    <ion-content padding="true" class="has-header">
+        <h1>Meter</h1>
         <div>
             <p>
                 How do you rate what you see now ? chose a value or confirm your last choice
@@ -55,16 +62,18 @@
             <button class="button button-stable button-block ion-minus" ng-click="like(-3)">3</button>
         </div>
         <button class="button button-stable button-block  icon ion-ios7-speedometer-outline" ng-click="likeAgain()">{{myRating.rating}}</button>
-		<h4>1234 = {{$scope.authData.uid }}</h4>
-      <ion-list>
-	  `
-        <ion-item ng-repeat="item in items | orderBy:'-$id' " ng-class="{purchased: item.status == 'purchased'}">
-          {{item.rating +' - ' +item.dt}}
-          <ion-option-button class="button-royal" ng-click="purchaseItem(item)">
-            <i class="icon ion-checkmark"></i>
-          </ion-option-button>
-        </ion-item>
-      </ion-list>
+        <h4>1234 = {{$scope.fbArr.getTotal() }}</h4>
+        <div google-chart chart="chartObject"></div>
+        </div>
+        <ion-list>
+            `
+            <ion-item ng-repeat="item in items | orderBy:'-$id' " ng-class="{purchased: item.status == 'purchased'}">
+                {{item.rating +' - ' +item.dt}}
+                <ion-option-button class="button-royal" ng-click="purchaseItem(item)">
+                    <i class="icon ion-checkmark"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
-  </body>
+</body>
 </html>

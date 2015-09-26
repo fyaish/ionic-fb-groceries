@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+
+ 
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        var chartData, chartOptions, chartObject, chartRef;
+
+        function drawChart() {
+
+            chartData = new google.visualization.DataTable();  
+            chartData.addColumn('string', 'Topping');
+            chartData.addColumn('number', 'Slices');
+            chartData.addColumn('string', 'key');
+
+            chartOptions = {
+                'title': 'How Much Pizza I Ate Last Night',
+                'width': 400,
+                'height': 300
+            };
+            chartObject = new google.visualization.PieChart(document.getElementById('chart_div'));
+
+            chartRef = new Firebase("https://amber-torch-2469.firebaseio.com/LessonPath1/Users/u1");
+            chartRef.on('child_added', function _add(snap) {
+                var data = snap.val();
+                data.$id = snap.key(); // assumes data is always an object
+
+                var arr = new Array(3);
+                arr[0] = data["Topping"];
+                arr[1] = parseInt(data["Slices"]);
+                arr[2] = data.$id;
+                chartData.addRow(arr);
+
+                console.log("child_added", data, arr);
+                chartObject.draw(chartData, chartOptions);
+            });
+
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+</body>
+</html>

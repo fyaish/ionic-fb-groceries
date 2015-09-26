@@ -1,0 +1,149 @@
+﻿<html>
+<head>
+
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+              ['Mushrooms', 3],
+              ['Onions', 1],
+              ['Olives', 1],
+              ['Zucchini', 1],
+              ['Pepperoni', 2]
+            ]);
+
+            // Set chart options
+            var options = {
+                'title': 'How Much Pizza I Ate Last Night',
+                'width': 400,
+                'height': 300
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+
+    <script>
+        function getSynchronizedArray(firebaseRef) {
+
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn('string', 'Topping');
+            dataTable.addColumn('number', 'Slices');
+            //dataTable.addColumn('boolean', 'Full Time Employee');
+            
+            var list = [];
+            syncChanges(dataTable, list, firebaseRef);
+            //return list;
+            return dataTable;
+        }
+
+        function syncChanges(dataTable, list, ref) {
+            ref.on('child_added', function _add(snap, prevChild) {
+                var data = snap.val();
+                data.$id = snap.key(); // assumes data is always an object
+                var pos = positionAfter(list, prevChild);
+                list.splice(pos, 0, data);
+                console.log("child_added", data);
+
+                var arr = new Array(2);
+                arr[0] = data["Topping"];
+                arr[1] = parseInt(data["Slices"]);
+                dataTable.addRow(arr);
+
+                //var arr = Object.keys(data).map(function (k) { return data[k] });
+                //console.log(arr);
+
+                //dataTable.addRows([
+                //    ['Floyd', 1],
+                //    ['Fritz', 2]
+                //]);
+            });
+        }
+
+        // similar to indexOf, but uses id to find element
+        function positionFor(list, key) {
+            for (var i = 0, len = list.length; i < len; i++) {
+                if (list[i].$id === key) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        // using the Firebase API's prevChild behavior, we
+        // place each element in the list after it's prev
+        // sibling or, if prevChild is null, at the beginning
+        function positionAfter(list, prevChild) {
+            if (prevChild === null) {
+                return 0;
+            }
+            else {
+                var i = positionFor(list, prevChild);
+                if (i === -1) {
+                    return list.length;
+                }
+                else {
+                    return i + 1;
+                }
+            }
+        }
+    </script>
+
+    <script>
+        var chartData = new google.visualization.DataTable();  
+            chartData.addColumn('string', 'Topping');
+            chartData.addColumn('number', 'Slices');
+
+        var chartOptions = {
+            'title': 'How Much Pizza I Ate Last Night',
+            'width': 400,
+            'height': 300
+        };
+        var chartObject = new google.visualization.PieChart(document.getElementById('chart_div'));
+
+        var chartRef = new Firebase("https://amber-torch-2469.firebaseio.com/LessonPath1/Users/u1");
+            chartRef.on('child_added', function _add(snap) {
+            var data = snap.val();
+            data.$id = snap.key(); // assumes data is always an object
+
+            var arr = new Array(2);
+            arr[0] = data["Topping"];
+            arr[1] = parseInt(data["Slices"]);
+            chartData.addRow(arr);
+
+            console.log("child_added", data, arr);
+            chartObject.draw(chartData, chartOptions);
+        });
+
+
+       // var arr = getSynchronizedArray(ref);
+
+
+    </script>
+</head>
+
+<body>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+</body>
+</html>

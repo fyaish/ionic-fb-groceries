@@ -22,20 +22,13 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
               });
               return total;
           },
-
-          getTableArray: function () {
-              var tbl = new Array();
+          getTotal2: function () {
+              var total = 0;
               // the array data is located in this.$list
-              console.log("getTableArray list", this.$list);
               angular.forEach(this.$list, function (rec) {
-                  console.log("forEach getTableArray", rec);
-                  var arr = new Array(2);
-                  arr[0] = rec.Topping;
-                  arr[1] = parseInt(rec.Slices);
-                  tbl.push(arr);
+                  if (!isNaN(rec.rating)) total += rec.rating;
               });
-              console.log("getTableArray", tbl);
-              return tbl;
+              return total;
           }
 
 
@@ -127,61 +120,23 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 	      minorTicks: 5
 	  };
 
-    
-	  //$scope.chartObject.data = [
-      //    ['Label', 'Value'],
-      //    ['Memory', 80],
-      //    ['CPU', 55],
-      //    ['Network', 68]
-	  //];
-      
-
-	  //var chartDataRef = new Firebase('https://amber-torch-2469.firebaseio.com/TestArr');
-    //$scope.chartObject.data = new google.visualization.DataTable( $firebaseArray(chartDataRef));
-    //$scope.chartObject.data = $firebaseArray(chartDataRef);
-    // $scope.chartObject.data = ListWithTotal(chartDataRef);
-
     /*
-	  var chartDataRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath1/Users/u1');
-	  $scope.fbArr = new ListWithTotal(chartDataRef);
-
-	  $scope.fbArr.$loaded().then(function () {
-	      $scope.dataArr = $scope.fbArr.getTableArray();
-	      $scope.dataTotla = $scope.fbArr.getTotal();
-	  });
-
+	  $scope.chartObject.data = [
+          ['Label', 'Value'],
+          ['Memory', 80],
+          ['CPU', 55],
+          ['Network', 68]
+	  ];
       */
 
+	 var chartDataRef = new Firebase('https://amber-torch-2469.firebaseio.com/TestArr');
+    //$scope.chartObject.data = new google.visualization.DataTable( $firebaseArray(chartDataRef));
+    //$scope.chartObject.data = $firebaseArray(chartDataRef);
+	 $scope.chartObject.data = ListWithTotal(chartDataRef);
 
 	 // var chartDataRef = new Firebase('https://amber-torch-2469.firebaseio.com/presence/User1');
-    //$scope.chartObject.data = Firebase.getAsArray(chartDataRef);
-
-    //Done working chart
-    /////////////////////////////////////
-	  var chartDataRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath1/Users/u1');
-	  var chartDataQuery = chartDataRef.orderByChild("timestamp").limitToLast(3);
-	  $scope.chartDataFba = $firebaseArray(chartDataQuery);
-
-
-	  $scope.chartDataFba.$watch(function () {
-	      var col = ['Topping', 'Slices'];
-	      var typ = ['string',  'number'];
-	      var chartData = new google.visualization.DataTable();
-	      chartData.addColumn(typ[0], col[0]);
-	      chartData.addColumn(typ[1], col[1]);
-	      //chartData.addColumn('string', 'key');
-
-	      for (var i = 0; i < $scope.chartDataFba.length; i++) {
-	          var obj = $scope.chartDataFba[i];
-	          var arr = new Array(2);
-	          arr[0] = obj[col[0]];
-	          arr[1] = obj[col[1]];
-	          chartData.addRow(arr);
-	      }
-	      console.log("chartDataFba.watch", chartData);
-	      $scope.chartObject.data = chartData;
-	  });
-  ///////////////////////////////////////////////////
+      //$scope.chartObject.data = Firebase.getAsArray(chartDataRef);
+	  
 	  
       
 
