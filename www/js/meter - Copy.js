@@ -115,7 +115,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 
     //chart
 	  $scope.chartObject = {};
-	  $scope.chartObject.type = "ColumnChart";
+	  $scope.chartObject.type = "Gauge";
 
 	  $scope.chartObject.options = {
 	      width: 400,

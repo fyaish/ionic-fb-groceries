@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+    <title>Review Summary</title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -32,39 +32,34 @@
     
     <!-- your app's js -->
     <script src="js/ng-google-chart.js"></script>
-    <script src="js/meter.js"></script>
+    <script src="js/review.js"></script>
 </head>
 <body ng-app="starter" ng-controller="ListCtrl">
     <ion-header-bar class="top">
-        <h1 class="title">Items</h1>
+        <h1 class="title">Lesson XYZ</h1>
         <button class="button button-icon ion-plus" ng-click="addItem()"></button>
     </ion-header-bar>
 
 
 
     <ion-content padding="true" class="has-header">
-        <h1>Meter</h1>
+        <h1>Review summary</h1>
         <div>
-            <p>
-                How do you rate what you see now ? chose a value or confirm your last choice
-            </p>
+            <div ng-bind="SubtotalRating.rating">
+
+            </div>
         </div>
-        <h3>Positive</h3>
+        <h3>Your rating</h3>
         <div class="button-bar">
-            <button class="button button-stable button-block ion-plus" ng-click="like(1)">1</button>
-            <button class="button button-stable button-block ion-plus" ng-click="like(2)">2</button>
-            <button class="button button-stable button-block ion-plus" ng-click="like(3)">3</button>
+            <button class="button button-stable button-block ion-android-sad" ng-click="like(1)"></button>
+            <button class="button button-stable button-block ion-sad-outline" ng-click="like(2)"></button>
+            <button class="button button-stable button-block ion-android-contacts" ng-click="like(3)"></button>
+            <button class="button button-stable button-block ion-happy-outline" ng-click="like(4)"></button>
+            <button class="button button-stable button-block ion-android-happy" ng-click="like(5)"></button>
         </div>
-        <h3>Negative</h3>
-        <div class="button-bar">
-            <button class="button button-stable button-block ion-minus" ng-click="like(-1)">1</button>
-            <button class="button button-stable button-block ion-minus" ng-click="like(-2)">2</button>
-            <button class="button button-stable button-block ion-minus" ng-click="like(-3)">3</button>
-        </div>
-        <button class="button button-stable button-block  icon ion-ios7-speedometer-outline" ng-click="likeAgain()">{{myRating.rating}}</button>
-        <h4>1234 = {{$scope.fbArr.getTotal() }}</h4>
+       
         <div google-chart chart="chartObject"></div>
-        </div>
+        
         <ion-list>
             `
             <ion-item ng-repeat="item in items | orderBy:'-$id' " ng-class="{purchased: item.status == 'purchased'}">

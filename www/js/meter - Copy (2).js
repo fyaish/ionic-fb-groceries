@@ -6,7 +6,7 @@
 angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 
 .factory('Items', ['$firebaseArray', function($firebaseArray) {
-  var itemsRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath3/Users/u1');
+  var itemsRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath4/Users/u1');
   return $firebaseArray(itemsRef);
 }])
 
@@ -47,16 +47,22 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
       }
   }
 ])
-.controller('ListCtrl', function ($scope, $firebaseArray, $firebaseAuth, $ionicListDelegate, Items, ListWithTotal) {
+.controller('ListCtrl', function ($scope, $firebaseObject, $firebaseArray, $firebaseAuth, $ionicListDelegate, Items, ListWithTotal) {
 
 	$scope.items = Items;
 	$scope.myRating = {
 		'uid': 'u1',
 		'rating': 1,
-		'last': 1,
+		'last': 0,
 		'dt': Firebase.ServerValue.TIMESTAMP
 	}
 	$scope.uid = "u1";
+	
+	var rootRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath11');
+	var subtotalObj = $firebaseObject(rootRef.child("Subtotal"));
+	subtotalObj.$bindTo($scope, "SubtotalRating");
+
+ 
 
 	//////////////////////////////////////////////
 	///// client authentication state /////////
@@ -110,8 +116,10 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 	});
 	*/
 	/////////////////////////////////////////////////////
-	
 
+
+
+    ///////////////////////////////////////
 
     //chart
 	  $scope.chartObject = {};
@@ -205,13 +213,18 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 	  }
 	  console.log("Wilma's data: ", snapshot.val());
 	};
-  
+ 
+    
+
+
  $scope.like = function(rating) {
-	var rootRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath3');
+	var rootRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath11');
 	var uid = "u1";		
-	var last = $scope.myRating.last;
-	$scope.myRating.last = $scope.myRating.rating;
+	var last = $scope.myRating.rating;
+	if (isNaN(last)) last = 0;
+	$scope.myRating.last = last; 
 	$scope.myRating.rating = rating; 
+	
 
 	// Users/u1
 	var userRef = rootRef.child("Users").child(uid);
@@ -225,10 +238,12 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 	var subtotalRef = rootRef.child("Subtotal");
 	subtotalRef.transaction(function(currentData) {
 	  if (currentData === null) {
-		return { 'rating': 1, 'total':1, 'count': 1, 'dt': Firebase.ServerValue.TIMESTAMP};
+	      return { 'rating': 1, 'total':1, 'count': 1, 'dt': Firebase.ServerValue.TIMESTAMP, 'data': [0,1,0,0,0,0]};
 	  } else {
 		currentData.total = currentData.total + rating - last;
 		currentData.rating = currentData.total / currentData.count;
+		currentData.data[rating]++;
+		if (currentData.data[last]>0) currentData.data[last]--;
 		currentData.dt = Firebase.ServerValue.TIMESTAMP;
 		
 		console.log('Subtotal transaction in progress on server.');
@@ -241,11 +256,12 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 	var totalRef = rootRef.child("Total");
 	totalRef.transaction(function(currentData) {
 	  if (currentData === null) {
-		return { 'rating': 1, 'total':1, 'count': 1, 'dt': Firebase.ServerValue.TIMESTAMP};
+	      return { 'rating': 1, 'total': 1, 'count': 1, 'dt': Firebase.ServerValue.TIMESTAMP, 'data': [0, 1, 0, 0, 0, 0] };
 	  } else {
 		currentData.total = currentData.total + rating;
 		currentData.count = currentData.count + 1;
 		currentData.rating = currentData.total / currentData.count;
+		currentData.data[rating]++;
 		currentData.dt = Firebase.ServerValue.TIMESTAMP;
 		
 		console.log('Total transaction in progress on server.');
