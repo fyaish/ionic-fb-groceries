@@ -66,7 +66,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 
 
 	$scope.cid = $scope.getURLParameter("cid");
-	if ($scope.cid == null) $scope.cid = "LessonPath11";
+	if ($scope.cid == null) $scope.cid = "Demo";
 
 	var rootRef = new Firebase("https://amber-torch-2469.firebaseio.com");
 	rootRef = rootRef.child($scope.cid);
@@ -123,20 +123,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
     ///////
     /////////////////////////////////////////
 
-	  $("#divRateIt").bind('rated',
-          function (event, value) {
-              //$('#value5').text('You\'ve rated it: ' + value);
-              $scope.like(value);
-          });
 
-	  //$("#divRateIt").bind('reset', function () { $('#value5').text('Rating reset'); });
-	  //$("#divRateIt").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
-
-	  rootRef.child("Total").on("value", function (snap) {
-	      var data = snap.val();
-	      console.log("on Total ", data);
-	      $('#divTotalRating').rateit('value', data.rating);
-	  });
 
     // Number of online users is the number of objects in the presence list.
 	  listRef.on("value", function (snap) {

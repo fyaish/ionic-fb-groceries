@@ -123,15 +123,6 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart'])
     ///////
     /////////////////////////////////////////
 
-	  $("#divRateIt").bind('rated',
-          function (event, value) {
-              //$('#value5').text('You\'ve rated it: ' + value);
-              $scope.like(value);
-          });
-
-	  //$("#divRateIt").bind('reset', function () { $('#value5').text('Rating reset'); });
-	  //$("#divRateIt").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
-
 	  rootRef.child("Total").on("value", function (snap) {
 	      var data = snap.val();
 	      console.log("on Total ", data);
