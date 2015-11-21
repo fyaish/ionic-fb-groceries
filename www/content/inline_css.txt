@@ -1,0 +1,66 @@
+        /*Antenna*/
+        div.antenna div.rateit-range {
+            background: url(content/antenna-black-large.png) no-repeat;
+            height: 25px;
+        }
+
+        div.antenna div.rateit-hover {
+            background: url(content/antenna-colors-large.png) no-repeat;
+        }
+
+        div.antenna div.rateit-selected {
+            background: url(content/antenna-colors-large.png) no-repeat;
+        }
+
+
+
+        span.antenna span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+            height: 25px;
+        }
+
+        span.antenna1 span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+
+        }
+        span.antenna2 span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+            
+        }
+        span.antenna3 span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+            
+        }
+        span.antenna4 span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+            
+        }
+        span.antenna5 span.rateit-range {
+            background: url(content/antenna-black.png) no-repeat;
+            
+        }
+
+        span.antenna0 span.rateit-selected {
+            background: url(content/antenna0.png) no-repeat;
+        }
+        span.antenna1 span.rateit-selected {
+            background: url(content/antenna1.png) no-repeat;
+        }
+        span.antenna2 span.rateit-selected {
+            background: url(content/antenna2.png) no-repeat;
+        }
+        span.antenna3 span.rateit-selected {
+            background: url(content/antenna3.png) no-repeat;
+        }
+        span.antenna4 span.rateit-selected {
+            background: url(content/antenna4.png) no-repeat;
+        }
+        span.antenna5 span.rateit-selected {
+            background: url(content/antenna5.png) no-repeat;
+        }
+        span.antenna6 span.rateit-selected {
+            background: url(content/antenna6.png) no-repeat;
+        }
+        span.antenna span.rateit-selected span.rateit-range {
+            background: url(content/antenna.png) no-repeat;
+        }  

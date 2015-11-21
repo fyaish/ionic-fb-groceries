@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
+angular.module('starter', ['ionic', 'firebase', 'googlechart'])
 
 .factory('Items', ['$firebaseArray', function($firebaseArray) {
   var itemsRef = new Firebase('https://amber-torch-2469.firebaseio.com/LessonPath4/Users/u1');
@@ -49,7 +49,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 ])
 .controller('ListCtrl', function ($scope, $firebaseObject, $firebaseArray, $firebaseAuth, $ionicListDelegate, Items, ListWithTotal) {
 
-	//$scope.items = Items;
+	$scope.items = Items;
 	$scope.myRating = {
 		'uid': 'u1',
 		'rating': 1,
@@ -72,10 +72,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 	rootRef = rootRef.child($scope.cid);
 	$scope.rootRef = rootRef;
 
-	var itemsRef = rootRef.child("All");
-	var itemsQuery = itemsRef.orderByChild("dt").limitToLast(10);
-	$scope.items = $firebaseArray(itemsQuery);
-	
+
 
     //////////////////////////////////////////////
     ///// client authentication state /////////
@@ -138,7 +135,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 	  rootRef.child("Total").on("value", function (snap) {
 	      var data = snap.val();
 	      console.log("on Total ", data);
-	      if (data) $('#divTotalRating').rateit('value', data.rating);
+	      $('#divTotalRating').rateit('value', data.rating);
 	  });
 
     // Number of online users is the number of objects in the presence list.
@@ -146,15 +143,8 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 	      console.log("# of online users = " + snap.numChildren());
 	  });
 
-	  $scope.SubtotalRating = { rating: 0, count: 0 };
 	  var subtotalObj = $firebaseObject(rootRef.child("Total"));
-	  subtotalObj.$bindTo($scope, "SubtotalRating").then(function () {
-	      console.log($scope.SubtotalRating); // { foo: "bar" }
-	      if ($scope.SubtotalRating == null) {
-	          subtotalObj.set({ rating: 0, count: 0 });  // this would update the database and $scope.data
-	      }
-
-	  });
+	  subtotalObj.$bindTo($scope, "SubtotalRating");
 
     //Done working chart
     /////////////////////////////////////
@@ -162,7 +152,7 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 
     //chart
 	  $scope.chartObject = {};
-	  $scope.chartObject.type = "ColumnChart"; // "BarChart";
+	  $scope.chartObject.type = "BarChart";
 
 	  $scope.chartObject.options = {
 	      legend: 'none'
@@ -178,15 +168,14 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 	          chartData.addColumn({ type: 'string', role: 'style' });
 	          console.log("data changed!", chartArrayObj);
 
-	          arrColor = ["red", "red", "red", "yellow", "green", "green"];
-	          for (var i = 1; i<=5; i++) {
+	          for (var i = 5; i>0; i--) {
 	              var arr = new Array(3);
 	              arr[0] = i + " \u2605 ";
 	              arr[1] = 0;
 	              if (chartArrayObj.data)
 	                  if (chartArrayObj.data.length >= i)
 	                        arr[1] = chartArrayObj.data[i];
-	              arr[2] = "color:" + arrColor[i] + "; opacity: 0.7";
+	              arr[2] = "color:orange; opacity: 0.6";
 	              chartData.addRow(arr);
 	          }
 	          var view = new google.visualization.DataView(chartData);
@@ -200,10 +189,6 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
                                2]);
 
 	          $scope.chartObject.data = view; //chartData;
-
-              //redraw rateIt 
-	          //$(function () { $('div.rateit, span.rateit').rateit(); });
-	          
 	      });
 
     //Done working chart
@@ -268,9 +253,9 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
 	$scope.myRating.rating = rating; 
 	
 
-	// All/
-	var allRef = rootRef.child("All");
-	allRef.push($scope.myRating);
+	// Users/u1
+	var userRef = rootRef.child("Users").child(uid);
+	userRef.push($scope.myRating);
 
 	// Current/u1
 	var userRef = rootRef.child("Current").child(uid);
@@ -321,6 +306,4 @@ angular.module('starter', ['ionic', 'firebase', 'googlechart', 'angularMoment'])
     itemRef.child('status').set('purchased');
     $ionicListDelegate.closeOptionButtons();
   };
-
-
 });
