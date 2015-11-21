@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Review Summary</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <!--script src="cordova.js"></script -->
+
+    <!--Firebase-->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', { 'packages': ['corechart', 'bar'] });
+    </script>
+
+    <!-- mement js -->
+    <script src="src/moment.min.js"></script>
+    <script src="src/angular-moment.min.js"></script>
+    
+    <!-- your app's js -->
+    <script src="js/ng-google-chart.js"></script>
+    <script src="js/review.js"></script>
+
+    <!-- RateIt -->
+    <link href="src/rateit.css" rel="stylesheet" type="text/css">
+    <link href="content/antenna.css" rel="stylesheet" type="text/css">
+    <script src="src/jquery.min.js" type="text/javascript"></script>
+    <script src="src/jquery.rateit.js" type="text/javascript"></script>
+    <style>
+        div.bigstars div.rateit-range {
+            background: url(content/star-white32.png);
+            height: 32px;
+        }
+
+        div.bigstars div.rateit-hover {
+            background: url(content/star-gold32.png);
+        }
+
+        div.bigstars div.rateit-selected {
+            background: url(content/star-red32.png);
+        }
+
+        div.bigstars div.rateit-reset {
+            background: url(content/star-black32.png);
+            width: 32px;
+            height: 32px;
+        }
+
+        div.bigstars div.rateit-reset:hover {
+            background: url(content/star-white32.png);
+        }
+    </style>
+    
+    
+</head>
+<body ng-app="starter" ng-controller="ListCtrl">
+    <ion-header-bar class="top">
+        <h1 class="title">Lesson XYZ</h1>
+        <button class="button button-icon ion-plus" ng-click="addItem()"></button>
+    </ion-header-bar>
+
+
+
+    <ion-content padding="true" class="has-header">
+        <h1>Review summary</h1>
+        <div>
+            <div class="rateit antenna" data-rateit-starwidth="33" data-rateit-starheight="75" id="divTotalRating" data-rateit-value="0" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+            <span ng-bind="SubtotalRating.rating | number:1">
+
+</span> 
+            (<span ng-bind="SubtotalRating.count">
+
+            </span> rating)
+        </div>
+        <div google-chart chart="chartObject"></div>
+
+        <h3>Your rating</h3>
+        <div class="button-bar">
+            <button class="button button-stable button-block ion-android-sad" ng-click="like(1)"></button>
+            <button class="button button-stable button-block ion-sad-outline" ng-click="like(2)"></button>
+            <button class="button button-stable button-block ion-android-contacts" ng-click="like(3)"></button>
+            <button class="button button-stable button-block ion-happy-outline" ng-click="like(4)"></button>
+            <button class="button button-stable button-block ion-android-happy" ng-click="like(5)"></button>
+        </div>
+       
+        
+        <!-- RateIt -->
+        
+        <div id="divRateIt" class="rateit antenna" data-rateit-starwidth="33" data-rateit-starheight="75" data-rateit-step="1">
+        </div>
+        <script type="text/javascript">
+            var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
+            $("#divRateIt").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
+        </script>     
+
+
+        <ion-list>
+            `
+            <ion-item ng-repeat="item in items | orderBy:'-$id' " ng-class="{purchased: item.status == 'purchased'}">
+                 <img ng-src="content/antenna{{item.rating}}.png">({{item.rating }}) - <span am-time-ago="item.dt"></span>
+                <ion-option-button class="button-royal" ng-click="purchaseItem(item)">
+                    <i class="icon ion-checkmark"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</body>
+</html>
